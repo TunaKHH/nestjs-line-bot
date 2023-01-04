@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Post, Controller, Res, Req, HttpStatus } from '@nestjs/common';
+
+import { BotService } from './bot/bot.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private botService: BotService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('callback')
+  getHello(@Res() res, @Req() req) {
+    req.body.events.flatMap((event) => {
+      return this.botService.handleEvent(event);
+    });
+    // this.botService.botMessage();
+    res.status(HttpStatus.OK).send('Bot service is working');
   }
 }
