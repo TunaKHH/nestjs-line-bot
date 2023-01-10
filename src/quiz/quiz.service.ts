@@ -9,15 +9,16 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class QuizService {
   onModuleInit() {
-    this.sayHello();
-  }
-
-  sayHello() {
-    console.log('hello');
+    // this.sayHello();
   }
 
   main() {
-    this.sayHello();
+    // this.sayHello();
+  }
+
+  // 進場詞
+  getEntryMessage() {
+    return `情緒原型評測\n此評測請用直覺點選\n只需一分鐘即可完成\n開始測驗 !!!!`;
   }
 
   // 確認使用者

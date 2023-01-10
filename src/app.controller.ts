@@ -8,10 +8,10 @@ export class AppController {
 
   @Post('callback')
   getHello(@Res() res, @Req() req) {
+    // 丟給botService處理
     req.body.events.flatMap((event) => {
       return this.botService.handleEvent(event);
     });
-    // this.botService.botMessage();
     res.status(HttpStatus.OK).send('Bot service is working');
   }
 }
