@@ -37,8 +37,36 @@ export class BotService {
     const msg = this.quizService.getEntryMessage();
 
     return this.client.replyMessage(event.replyToken, {
-      type: 'text',
-      text: msg,
+      type: 'flex',
+      altText: msg,
+      contents: {
+        type: 'bubble',
+        body: {
+          type: 'box',
+          layout: 'vertical',
+          contents: [
+            {
+              type: 'image',
+              url: 'https://i.imgur.com/awSXNi4.png',
+              size: 'full',
+            },
+            {
+              type: 'text',
+              text: msg,
+              wrap: true,
+            },
+            {
+              type: 'button',
+              action: {
+                type: 'message',
+                label: '開始測驗!!!',
+                text: '開始測驗!!!',
+              },
+              style: 'link',
+            },
+          ],
+        },
+      },
     });
   }
 }
