@@ -1,10 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import * as line from '@line/bot-sdk';
 import { QuizService } from 'src/quiz/quiz.service';
+import * as line from '@line/bot-sdk';
+import { UserService } from 'src/user/user.service';
+import { UserStorageService } from 'src/session/userStorage.service';
+import { UserStage } from 'src/enum/enum';
 
 @Injectable()
 export class BotService {
-  constructor(private quizService: QuizService) {}
+  constructor(
+    private quizService: QuizService,
+    private userService: UserService,
+    private userStorage: UserStorageService,
+  ) {}
 
   config = {
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
@@ -22,7 +29,6 @@ export class BotService {
 
   botMessage() {
     process.env.NTBA_FIX_319 = '1';
-
     // Matches /done 紀錄該使用者完成運動到google sheet
     line.Client.bind('message', (event) => {
       console.log(event);
@@ -30,43 +36,40 @@ export class BotService {
   }
 
   // 處理使用者訊息
-  handleEvent(event) {
+  handleEvent(event: line.WebhookEvent) {
     if (event.type !== 'message' || event.message.type !== 'text') {
       return Promise.resolve(null);
     }
-    const msg = this.quizService.getEntryMessage();
 
-    return this.client.replyMessage(event.replyToken, {
-      type: 'flex',
-      altText: msg,
-      contents: {
-        type: 'bubble',
-        body: {
-          type: 'box',
-          layout: 'vertical',
-          contents: [
-            {
-              type: 'image',
-              url: 'https://i.imgur.com/awSXNi4.png',
-              size: 'full',
-            },
-            {
-              type: 'text',
-              text: msg,
-              wrap: true,
-            },
-            {
-              type: 'button',
-              action: {
-                type: 'message',
-                label: '開始測驗!!!',
-                text: '開始測驗!!!',
-              },
-              style: 'link',
-            },
-          ],
-        },
-      },
-    });
+    // 取得使用者資料
+    const user = this.userStorage.getUser(event.source.userId);
+
+    // 處理使用者輸入的訊息
+    this.userService.handleUserInput(user, event.message.text);
+
+    // 處理要傳給使用者的訊息
+    let responseMessage = null;
+    responseMessage = this.quizService.getEntryMessage();
+
+    switch (user.stage) {
+      case UserStage.ENTRY: // 進場詞
+        responseMessage = this.quizService.getEntryMessage();
+        break;
+      case UserStage.QUIZ1: // 題目
+      case UserStage.QUIZ2:
+      case UserStage.QUIZ3:
+      case UserStage.QUIZ4:
+      case UserStage.QUIZ5:
+        responseMessage = this.quizService.getQuiz(user.stage);
+        // 更新使用者的下一個stage狀態
+        this.userStorage.updateUserNextStage(event.source.userId);
+        break;
+      case UserStage.RESULT: // 結果
+        responseMessage = this.quizService.getResultMessage(
+          this.userService.getMostAnswer(user),
+        );
+    }
+
+    return this.client.replyMessage(event.replyToken, responseMessage);
   }
 }
