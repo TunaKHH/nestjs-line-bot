@@ -9,6 +9,11 @@ import * as line from '@line/bot-sdk';
 import { Quiz } from './quiz.interface';
 import { UserStage } from 'src/enum/enum';
 
+interface LineFlexMessage {
+  url: string; // 圖片網址
+  text: string; // 題目
+  options: line.FlexComponent; // 選項
+}
 @Injectable()
 export class QuizService {
   quizzes: Quiz[] = [
@@ -63,10 +68,6 @@ export class QuizService {
       ],
     },
   ];
-
-  main() {
-    // this.sayHello();
-  }
 
   // 進場詞
   getEntryMessage() {
@@ -185,32 +186,30 @@ export class QuizService {
   // 回傳結果訊息
   getResultMessage(result: string): line.Message {
     if (!result) return this.getEntryMessage();
-    let resultUrl = '';
-    switch (result) {
-      case '1':
-        // 忍者
-        resultUrl = 'https://i.imgur.com/01NsPDl.png';
-        break;
-      case '2':
-        // 雪寶
-        resultUrl = 'https://i.imgur.com/lNJjDQW.png';
-        break;
-      case '3':
-        // 悟空
-        resultUrl = 'https://i.imgur.com/smp1y9Q.png';
-        break;
-      case '4':
-        // 阿凡達
-        resultUrl = 'https://i.imgur.com/ub6VTtO.png';
-        break;
-      default:
-        resultUrl = 'https://i.imgur.com/ub6VTtO.png';
-        break;
-    }
+    // 結果文字
 
+    const resultText = `上面圖片 是你的初步解答\n寫下您的姓名+mail送出\n可獲得更完整的詳細資料\n讓你更了解你自己\n也歡迎讓家中孩子一起評測`;
+    // const resultText = `講座：【如何正向引導孩子的情緒】\n\n講座時間：02/10(星期五) 晚上7:30-9:00\n主辦單位：芙愛占心學院\n課程費用：免費\n上課方式：線上ZOOM直播\n(請先行下載ZOOM APP)\n\n填寫LINE ID以及 手機號碼\n我們將以line或簡訊\n通知提醒線上ZOOM直播教室連結哦~`;
+
+    // 根據結果數字轉換成結果圖片
+    const resultUrl = this.convertResultTextToImageUrl(result);
+
+    const lineOptions = this.generateLineOptionsByArray([
+      '直接在下方輸入email後送出',
+    ]);
+    const lineFlexMessage: LineFlexMessage = {
+      url: resultUrl,
+      text: resultText,
+      options: lineOptions,
+    };
+    return this.generateFlexMessage(lineFlexMessage);
+  }
+
+  // 生成 flex message
+  generateFlexMessage(lineFlexMessage: LineFlexMessage): line.Message {
     const message: line.Message = {
       type: 'flex',
-      altText: result,
+      altText: lineFlexMessage.text,
       contents: {
         type: 'bubble',
         body: {
@@ -218,18 +217,51 @@ export class QuizService {
           layout: 'vertical',
           contents: [
             {
+              // 題目圖片
               type: 'image',
-              url: resultUrl,
+              url: lineFlexMessage.url,
               size: 'full',
             },
             {
+              // 題目描述文字
               type: 'text',
-              text: result,
+              text: lineFlexMessage.text,
               wrap: true,
             },
+            // 選項按鈕
+            lineFlexMessage.options,
           ],
         },
       },
+    };
+    return message;
+  }
+
+  // 根據結果數字轉換成結果圖片
+  convertResultTextToImageUrl(result: string): string {
+    const imageUrls = {
+      '1': 'https://i.imgur.com/01NsPDl.png', // 忍者
+      '2': 'https://i.imgur.com/lNJjDQW.png', // 雪寶
+      '3': 'https://i.imgur.com/smp1y9Q.png', // 悟空
+      '4': 'https://i.imgur.com/ub6VTtO.png', // 阿凡達
+      default: 'https://i.imgur.com/ub6VTtO.png', // 阿凡達
+    };
+    return imageUrls[result] || imageUrls.default;
+  }
+
+  // 取得結果分享訊息
+  getResultShareMessage(): line.Message {
+    const message: line.Message = {
+      type: 'text',
+      text: `公益講座<如何正向引導孩子的情緒>\n講座時間 : 2/10(五)晚上7:30-9:00\n主辦單位 : 芙愛占心學院\n課程費用 : 父母免費研習\n上課方式 : 線上zoom直播互動\n(請先下載Zoom App)\n\n填寫Line ID 及 手機號碼\n我們將以Line 或 簡訊\n通知線上zoom直播教室連結喔`,
+    };
+
+    return message;
+  }
+  getResultNameMessage(): line.Message {
+    const message: line.Message = {
+      type: 'text',
+      text: `請輸入您的大名`,
     };
     return message;
   }

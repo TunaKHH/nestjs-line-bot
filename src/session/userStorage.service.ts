@@ -33,11 +33,23 @@ export class UserStorageService {
       // 建立使用者資料
       this.usersStorage[userId] = {
         stage: UserStage.ENTRY as UserStage,
-        score: 0,
         resultArr: [], // 紀錄使用者的答案
-        animal: '',
+        email: null,
+        name: null,
       };
     }
     return this.usersStorage[userId];
+  }
+
+  // 更新使用者email
+  updateUserEmail(userId: string, email: string) {
+    const user = this.getUser(userId);
+    user.email = email;
+  }
+
+  // 更新使用者name
+  updateUserName(userId: string, name: string) {
+    const user = this.getUser(userId);
+    user.name = name;
   }
 }

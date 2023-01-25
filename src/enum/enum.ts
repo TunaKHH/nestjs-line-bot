@@ -6,5 +6,8 @@ export enum UserStage {
   QUIZ3,
   QUIZ4,
   QUIZ5,
-  RESULT,
+  RESULT_TEST,
+  RESULT_EMAIL,
+  RESULT_NAME,
+  RESULT_SHARE,
 }

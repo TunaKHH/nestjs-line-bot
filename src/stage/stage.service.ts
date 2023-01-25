@@ -5,27 +5,26 @@ import { UserStage } from 'src/enum/enum';
 export class StageService {
   constructor() {}
 
+  // UserStage的順序
+  nextStages = [
+    UserStage.ENTRY,
+    UserStage.QUIZ1,
+    UserStage.QUIZ2,
+    UserStage.QUIZ3,
+    UserStage.QUIZ4,
+    UserStage.QUIZ5,
+    UserStage.RESULT_TEST,
+    UserStage.RESULT_EMAIL,
+    UserStage.RESULT_NAME,
+    UserStage.RESULT_SHARE,
+    UserStage.ENTRY,
+  ];
+
   // 取得下一個UserStage
   getNextStage(stage: UserStage): UserStage {
-    switch (stage) {
-      case UserStage.NONE:
-        return UserStage.ENTRY;
-      case UserStage.ENTRY:
-        return UserStage.QUIZ1;
-      case UserStage.QUIZ1:
-        return UserStage.QUIZ2;
-      case UserStage.QUIZ2:
-        return UserStage.QUIZ3;
-      case UserStage.QUIZ3:
-        return UserStage.QUIZ4;
-      case UserStage.QUIZ4:
-        return UserStage.QUIZ5;
-      case UserStage.QUIZ5:
-        return UserStage.RESULT;
-      case UserStage.RESULT:
-        return UserStage.ENTRY;
-      default:
-        return UserStage.ENTRY;
-    }
+    // 如果stage是最後一個就回傳第一個
+    return (
+      this.nextStages[this.nextStages.indexOf(stage) + 1] || UserStage.ENTRY
+    );
   }
 }

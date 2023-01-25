@@ -35,8 +35,14 @@ export class BotService {
     });
   }
 
+  // 更新使用者email
+  updateUserEmail(userId: string, email: string) {
+    const user = this.userStorage.getUser(userId);
+    user.email = email;
+  }
+
   // 處理使用者訊息
-  handleEvent(event: line.WebhookEvent) {
+  handleEvent(event: line.WebhookEvent): Promise<line.MessageAPIResponseBase> {
     if (event.type !== 'message' || event.message.type !== 'text') {
       return Promise.resolve(null);
     }
@@ -45,11 +51,19 @@ export class BotService {
     const user = this.userStorage.getUser(event.source.userId);
 
     // 處理使用者輸入的訊息
-    this.userService.handleUserInput(user, event.message.text);
+    try {
+      this.userService.handleUserInput(user, event.message.text);
+    } catch (e) {
+      // 如果有錯誤就回傳錯誤訊息
+      const message: line.Message = {
+        type: 'text',
+        text: e.message,
+      };
+      return this.client.replyMessage(event.replyToken, message);
+    }
 
     // 處理要傳給使用者的訊息
     let responseMessage = null;
-    responseMessage = this.quizService.getEntryMessage();
 
     switch (user.stage) {
       case UserStage.ENTRY: // 進場詞
@@ -61,15 +75,30 @@ export class BotService {
       case UserStage.QUIZ4:
       case UserStage.QUIZ5:
         responseMessage = this.quizService.getQuiz(user.stage);
-        // 更新使用者的下一個stage狀態
-        this.userStorage.updateUserNextStage(event.source.userId);
         break;
-      case UserStage.RESULT: // 結果
+      case UserStage.RESULT_TEST: // 測驗結果
         responseMessage = this.quizService.getResultMessage(
           this.userService.getMostAnswer(user),
         );
+
+        break;
+      case UserStage.RESULT_EMAIL: // 使用者輸入email結束
+        // 取得詢問使用者name的訊息
+        responseMessage = this.quizService.getResultNameMessage();
+        break;
+      case UserStage.RESULT_NAME: // 使用者輸入姓名結束
+        // TODO 將使用者資料寫入google sheet
+        // this.userService.writeUserToSheet(user);
+        responseMessage = this.quizService.getResultShareMessage();
+        break;
+      case UserStage.RESULT_SHARE: // 分享結果
+        // responseMessage = this.quizService.getResultShareMessage();
+        break;
     }
 
+    // 更新使用者的下一個stage狀態
+    this.userStorage.updateUserNextStage(event.source.userId);
+    // 回傳訊息
     return this.client.replyMessage(event.replyToken, responseMessage);
   }
 }
