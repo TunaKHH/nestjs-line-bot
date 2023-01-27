@@ -79,10 +79,13 @@ export class BotService {
         responseMessage = this.quizService.getQuiz(user.stage);
         break;
       case UserStage.RESULT_TEST: // 測驗結果
-        responseMessage = this.quizService.getResultMessage(
-          this.userService.getMostAnswer(user),
-        );
+        // 取得測驗結果的訊息(1~4)
+        const resultNum = this.userService.getMostAnswer(user);
 
+        // 取得使用者測驗的結果動物 並儲存到user
+        user.animal = this.quizService.getResultAnimal(resultNum);
+
+        responseMessage = this.quizService.getResultMessage(resultNum);
         break;
       case UserStage.RESULT_EMAIL: // 使用者輸入email結束
         // 取得詢問使用者name的訊息

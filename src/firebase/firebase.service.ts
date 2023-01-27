@@ -29,7 +29,9 @@ export class FirebaseService {
         username: user.name || '',
         email: user.email || '',
         phone: user.phone || '',
+        animal: user.animal || '',
         lineId: user.customLineId || '',
+        editAt: new Date().toLocaleString(), // 時間戳記 yyyy-mm-dd hh:mm:ss
       };
       const updates = {};
       updates['/users/' + newUserKey] = userData;

@@ -1,4 +1,4 @@
-import { ResultButtonInterface } from 'src/interface';
+import { AnimalInterface, ResultButtonInterface } from 'src/interface';
 
 export enum UserStage {
   NONE,
@@ -15,6 +15,43 @@ export enum UserStage {
   RESULT_PHONE,
   RESULT_LINE_ID,
   RESULT_SHARE,
+}
+
+export class Animal {
+  // 忍者
+  static readonly NINJA = new Animal('NINJA', {
+    text: '忍者',
+    url: 'https://i.imgur.com/01NsPDl.png',
+    shareUrl: 'https://i.imgur.com/01NsPDl.png', // TODO 這邊需要改 須先到 https://picsee.io/ 設定
+  });
+  // 雪寶
+  static readonly SNOWMAN = new Animal('SNOWMAN', {
+    text: '雪寶',
+    url: 'https://i.imgur.com/lNJjDQW.png',
+    shareUrl: 'https://i.imgur.com/lNJjDQW.png', // TODO 這邊需要改 須先到 https://picsee.io/ 設定
+  });
+  // 悟空
+  static readonly MONKEY = new Animal('MONKEY', {
+    text: '悟空',
+    url: 'https://i.imgur.com/smp1y9Q.png',
+    shareUrl: 'https://i.imgur.com/smp1y9Q.png', // TODO 這邊需要改 須先到 https://picsee.io/ 設定
+  });
+  // 阿凡達
+  static readonly AVATAR = new Animal('AVATAR', {
+    text: '阿凡達',
+    url: 'https://i.imgur.com/ub6VTtO.png',
+    shareUrl: 'https://i.imgur.com/ub6VTtO.png', // TODO 這邊需要改 須先到 https://picsee.io/ 設定
+  });
+
+  // private to disallow creating other instances of this type
+  private constructor(
+    private readonly key: string,
+    public readonly value: AnimalInterface,
+  ) {}
+
+  toString() {
+    return this.key;
+  }
 }
 
 export class ResultObject {

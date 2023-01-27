@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common';
 import * as line from '@line/bot-sdk';
 import { Quiz } from './quiz.interface';
-import { ResultObject, UserStage } from 'src/enum/enum';
+import { Animal, ResultObject, UserStage } from 'src/enum/enum';
 
 interface LineFlexMessage {
   url: string; // 圖片網址
@@ -389,5 +389,19 @@ export class QuizService {
       text: `請輸入您的Line ID`,
     };
     return message;
+  }
+  getResultAnimal(number: string): string {
+    if (number === '1') {
+      return Animal.NINJA.toString();
+    }
+    if (number === '2') {
+      return Animal.SNOWMAN.toString();
+    }
+    if (number === '3') {
+      return Animal.MONKEY.toString();
+    }
+    if (number === '4') {
+      return Animal.AVATAR.toString();
+    }
   }
 }
