@@ -3,7 +3,8 @@ import { QuizService } from 'src/quiz/quiz.service';
 import * as line from '@line/bot-sdk';
 import { UserService } from 'src/user/user.service';
 import { UserStorageService } from 'src/session/userStorage.service';
-import { UserStage } from 'src/enum/enum';
+import { ResultObject, UserStage } from 'src/enum/enum';
+import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Injectable()
 export class BotService {
@@ -11,6 +12,7 @@ export class BotService {
     private quizService: QuizService,
     private userService: UserService,
     private userStorage: UserStorageService,
+    private firebaseService: FirebaseService,
   ) {}
 
   config = {
@@ -87,11 +89,30 @@ export class BotService {
         responseMessage = this.quizService.getResultNameMessage();
         break;
       case UserStage.RESULT_NAME: // 使用者輸入姓名結束
-        // TODO 將使用者資料寫入google sheet
-        // this.userService.writeUserToSheet(user);
+        // 取得包含報名的訊息的結果訊息
         responseMessage = this.quizService.getResultShareMessage();
         break;
-      case UserStage.RESULT_SHARE: // 分享結果
+      case UserStage.RESULT_SIGNUP: // 使用者點擊報名後
+        // 如果使用者輸入的不是報名
+        if (ResultObject.ANSWER_SIGNUP.value.text !== event.message.text) {
+          // 再次詢問使用者是否要報名
+          responseMessage = this.quizService.getResultShareMessage();
+          return this.client.replyMessage(event.replyToken, responseMessage);
+        }
+        // 詢問使用者聯絡電話
+        responseMessage = this.quizService.getRequestUserPhoneMessage();
+        break;
+
+      case UserStage.RESULT_PHONE: // 使用者輸入電話結束
+        // 詢問使用者line id
+        // TODO 前面需要處理使用者輸入的電話
+        responseMessage = this.quizService.getRequestUserLineIdMessage();
+        break;
+      case UserStage.RESULT_LINE_ID: // 使用者輸入line id結束
+        // 取得分享的訊息
+        responseMessage = this.quizService.getSuccessSignupResultShareMessage();
+        break;
+      case UserStage.RESULT_SHARE: // 分享結果被點擊
         // responseMessage = this.quizService.getResultShareMessage();
         break;
     }

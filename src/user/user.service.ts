@@ -6,11 +6,12 @@
 
 import { Injectable } from '@nestjs/common';
 import { User } from './user.interface';
-import { UserStage } from 'src/enum/enum';
-import { ignoreElements } from 'rxjs';
+import { ResultObject, UserStage } from 'src/enum/enum';
+import { FirebaseService } from 'src/firebase/firebase.service';
 
 @Injectable()
 export class UserService {
+  constructor(private readonly firebaseService: FirebaseService) {}
   // 更新使用者session的stage狀態
   updateUserStage(userId: string, message: string): void {
     return;
@@ -41,8 +42,32 @@ export class UserService {
       user.email = message;
     }
 
+    if (user.stage === UserStage.RESULT_PHONE) {
+      // 如果手機號碼格式不正確
+      if (message.length !== 10) {
+        throw new Error('請輸入正確的手機號碼');
+      }
+      // 如果手機號碼格式正確 更新使用者phone
+      user.phone = message;
+    }
+
+    if (user.stage === UserStage.RESULT_LINE_ID) {
+      // 不驗證 直接更新使用者line id
+      user.customLineId = message;
+    }
+
     // 更新使用者姓名
     if (user.stage === UserStage.RESULT_NAME) user.name = message;
+
+    // 更新使用者資料到firebase
+    if (
+      user.stage === UserStage.RESULT_NAME ||
+      user.stage === UserStage.RESULT_EMAIL ||
+      user.stage === UserStage.RESULT_PHONE ||
+      user.stage === UserStage.RESULT_LINE_ID
+    ) {
+      this.firebaseService.writeUserData(user);
+    }
 
     // 如果user.stage是ENTRY 且 message是開始測驗!!! 就把user.stage改成QUIZ1
     if (user.stage === UserStage.ENTRY && message === '開始測驗!!!') {

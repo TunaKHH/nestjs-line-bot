@@ -7,7 +7,7 @@
 import { Injectable } from '@nestjs/common';
 import * as line from '@line/bot-sdk';
 import { Quiz } from './quiz.interface';
-import { UserStage } from 'src/enum/enum';
+import { ResultObject, UserStage } from 'src/enum/enum';
 
 interface LineFlexMessage {
   url: string; // 圖片網址
@@ -251,17 +251,142 @@ export class QuizService {
 
   // 取得結果分享訊息
   getResultShareMessage(): line.Message {
+    // 描述文字
+    const descriptionText = `公益講座<如何正向引導孩子的情緒>\n講座時間 :先下載Zoom App 2/10(五)晚上7:30-9:00\n主辦單位 : 芙愛占心學院\n課程費用 : 父母免費研習\n上課方式 : 線上zoom直播互動\n(請先下載Zoom App)\n\n填寫Line ID 及 手機號碼\n我們將以Line 或 簡訊\n通知線上zoom直播教室連結喔`;
+    // 要回傳的結果訊息
     const message: line.Message = {
-      type: 'text',
-      text: `公益講座<如何正向引導孩子的情緒>\n講座時間 : 2/10(五)晚上7:30-9:00\n主辦單位 : 芙愛占心學院\n課程費用 : 父母免費研習\n上課方式 : 線上zoom直播互動\n(請先下載Zoom App)\n\n填寫Line ID 及 手機號碼\n我們將以Line 或 簡訊\n通知線上zoom直播教室連結喔`,
+      type: 'flex',
+      altText: descriptionText,
+      contents: {
+        type: 'bubble',
+        body: {
+          type: 'box',
+          layout: 'vertical',
+          contents: [
+            {
+              type: 'image',
+              url: 'https://i.imgur.com/awSXNi4.png',
+              size: 'full',
+            },
+            {
+              type: 'text',
+              text: descriptionText,
+              wrap: true,
+            },
+            {
+              type: 'button',
+              style: 'secondary',
+              margin: 'md',
+              color: '#FFCFAD',
+              action: {
+                type: 'message',
+                label: ResultObject.ANSWER_SIGNUP.value.text,
+                text: ResultObject.ANSWER_SIGNUP.value.text,
+              },
+            },
+            {
+              type: 'button',
+              style: 'primary',
+              margin: 'md',
+              action: {
+                type: 'uri',
+                label: ResultObject.LINE_SHARE.value.text,
+                uri: ResultObject.LINE_SHARE.value.url,
+              },
+            },
+            {
+              type: 'button',
+              style: 'primary',
+              color: '#2374e1',
+              margin: 'md',
+              action: {
+                type: 'uri',
+                label: ResultObject.FACEBOOK_SHARE.value.text,
+                uri: ResultObject.FACEBOOK_SHARE.value.urls['水母'],
+              },
+            },
+          ],
+        },
+      },
     };
-
     return message;
   }
+
+  // 取得已經報名完成的結果分享訊息
+  getSuccessSignupResultShareMessage(): line.Message {
+    // 描述文字
+    const descriptionText = `感謝您，報名已成功\n\n公益講座<如何正向引導孩子的情緒>\n講座時間 :先下載Zoom App 2/10(五)晚上7:30-9:00\n主辦單位 : 芙愛占心學院\n課程費用 : 父母免費研習\n上課方式 : 線上zoom直播互動\n(請先下載Zoom App)\n\n填寫Line ID 及 手機號碼\n我們將以Line 或 簡訊\n通知線上zoom直播教室連結喔`;
+    // 要回傳的結果訊息
+    const message: line.Message = {
+      type: 'flex',
+      altText: descriptionText,
+      contents: {
+        type: 'bubble',
+        body: {
+          type: 'box',
+          layout: 'vertical',
+          contents: [
+            {
+              type: 'image',
+              url: 'https://i.imgur.com/awSXNi4.png',
+              size: 'full',
+            },
+            {
+              type: 'text',
+              text: descriptionText,
+              wrap: true,
+            },
+            {
+              type: 'button',
+              style: 'primary',
+              margin: 'md',
+              action: {
+                type: 'uri',
+                label: ResultObject.LINE_SHARE.value.text,
+                uri: ResultObject.LINE_SHARE.value.url,
+              },
+            },
+            {
+              type: 'button',
+              style: 'primary',
+              color: '#2374e1',
+              margin: 'md',
+              action: {
+                type: 'uri',
+                label: ResultObject.FACEBOOK_SHARE.value.text,
+                uri: ResultObject.FACEBOOK_SHARE.value.urls['水母'],
+              },
+            },
+          ],
+        },
+      },
+    };
+    return message;
+  }
+
+  // 取得要求玩家輸入姓名的訊息
   getResultNameMessage(): line.Message {
     const message: line.Message = {
       type: 'text',
       text: `請輸入您的大名`,
+    };
+    return message;
+  }
+
+  // 取得要求玩家輸入電話的訊息
+  getRequestUserPhoneMessage(): line.Message {
+    const message: line.Message = {
+      type: 'text',
+      text: `請輸入您的手機號碼`,
+    };
+    return message;
+  }
+
+  // 取得要求玩家輸入Line ID的訊息
+  getRequestUserLineIdMessage(): line.Message {
+    const message: line.Message = {
+      type: 'text',
+      text: `請輸入您的Line ID`,
     };
     return message;
   }

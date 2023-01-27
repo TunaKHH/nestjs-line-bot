@@ -32,8 +32,10 @@ export class UserStorageService {
     if (!this.usersStorage[userId]) {
       // 建立使用者資料
       this.usersStorage[userId] = {
+        lineId: userId,
         stage: UserStage.ENTRY as UserStage,
         resultArr: [], // 紀錄使用者的答案
+        customLineId: null, // 使用者自訂的lineId e.g. @user
         email: null,
         name: null,
       };
