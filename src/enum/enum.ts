@@ -22,25 +22,25 @@ export class Animal {
   static readonly NINJA = new Animal('NINJA', {
     text: '忍者',
     url: 'https://i.imgur.com/01NsPDl.png',
-    shareUrl: 'https://i.imgur.com/01NsPDl.png', // TODO 這邊需要改 須先到 https://picsee.io/ 設定
+    shareUrl: 'https://pse.is/4pjn7a',
   });
   // 雪寶
   static readonly SNOWMAN = new Animal('SNOWMAN', {
     text: '雪寶',
     url: 'https://i.imgur.com/lNJjDQW.png',
-    shareUrl: 'https://i.imgur.com/lNJjDQW.png', // TODO 這邊需要改 須先到 https://picsee.io/ 設定
+    shareUrl: 'https://pse.is/4rjlr4',
   });
   // 悟空
   static readonly MONKEY = new Animal('MONKEY', {
     text: '悟空',
     url: 'https://i.imgur.com/smp1y9Q.png',
-    shareUrl: 'https://i.imgur.com/smp1y9Q.png', // TODO 這邊需要改 須先到 https://picsee.io/ 設定
+    shareUrl: 'https://pse.is/4pn87b',
   });
   // 阿凡達
   static readonly AVATAR = new Animal('AVATAR', {
     text: '阿凡達',
     url: 'https://i.imgur.com/ub6VTtO.png',
-    shareUrl: 'https://i.imgur.com/ub6VTtO.png', // TODO 這邊需要改 須先到 https://picsee.io/ 設定
+    shareUrl: 'https://pse.is/4rc8wd',
   });
 
   // private to disallow creating other instances of this type
@@ -66,10 +66,10 @@ export class ResultObject {
   static readonly FACEBOOK_SHARE = new ResultObject('FACEBOOK_SHARE', {
     text: 'Facebook分享好友 一起玩測',
     urls: {
-      獅子王: 'https://pse.is/4m3zkr', // 獅子王
-      駱駝: 'https://pse.is/4lrnmz', // 駱駝
-      北極熊: 'https://pse.is/4n3pu6', // 北極熊
-      水母: 'https://pse.is/4mupm4', // 水母
+      NINJA: 'https://pse.is/4m3zkr',
+      SNOWMAN: 'https://pse.is/4lrnmz',
+      MONKEY: 'https://pse.is/4n3pu6',
+      AVATAR: 'https://pse.is/4mupm4',
     },
   });
 

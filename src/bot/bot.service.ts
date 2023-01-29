@@ -93,13 +93,13 @@ export class BotService {
         break;
       case UserStage.RESULT_NAME: // 使用者輸入姓名結束
         // 取得包含報名的訊息的結果訊息
-        responseMessage = this.quizService.getResultShareMessage();
+        responseMessage = this.quizService.getResultShareMessage(user.animal);
         break;
       case UserStage.RESULT_SIGNUP: // 使用者點擊報名後
         // 如果使用者輸入的不是報名
         if (ResultObject.ANSWER_SIGNUP.value.text !== event.message.text) {
           // 再次詢問使用者是否要報名
-          responseMessage = this.quizService.getResultShareMessage();
+          responseMessage = this.quizService.getResultShareMessage(user.animal);
           return this.client.replyMessage(event.replyToken, responseMessage);
         }
         // 詢問使用者聯絡電話
@@ -116,7 +116,7 @@ export class BotService {
         responseMessage = this.quizService.getSuccessSignupResultShareMessage();
         break;
       case UserStage.RESULT_SHARE: // 分享結果被點擊
-        // responseMessage = this.quizService.getResultShareMessage();
+        // responseMessage = this.quizService.getResultShareMessage(user.animal);
         break;
     }
 
