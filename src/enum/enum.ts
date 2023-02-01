@@ -66,10 +66,10 @@ export class ResultObject {
   static readonly FACEBOOK_SHARE = new ResultObject('FACEBOOK_SHARE', {
     text: 'Facebook分享好友 一起玩測',
     urls: {
-      NINJA: 'https://pse.is/4m3zkr',
-      SNOWMAN: 'https://pse.is/4lrnmz',
-      MONKEY: 'https://pse.is/4n3pu6',
-      AVATAR: 'https://pse.is/4mupm4',
+      NINJA: 'https://pse.is/4pjn7a',
+      SNOWMAN: 'https://pse.is/4rjlr4',
+      MONKEY: 'https://pse.is/4pn87b',
+      AVATAR: 'https://pse.is/4rc8wd',
     },
   });
 

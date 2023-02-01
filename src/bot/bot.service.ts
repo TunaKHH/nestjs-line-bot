@@ -108,12 +108,13 @@ export class BotService {
 
       case UserStage.RESULT_PHONE: // 使用者輸入電話結束
         // 詢問使用者line id
-        // TODO 前面需要處理使用者輸入的電話
         responseMessage = this.quizService.getRequestUserLineIdMessage();
         break;
       case UserStage.RESULT_LINE_ID: // 使用者輸入line id結束
         // 取得分享的訊息
-        responseMessage = this.quizService.getSuccessSignupResultShareMessage();
+        responseMessage = this.quizService.getSuccessSignupResultShareMessage(
+          user.animal,
+        );
         break;
       case UserStage.RESULT_SHARE: // 分享結果被點擊
         // responseMessage = this.quizService.getResultShareMessage(user.animal);
