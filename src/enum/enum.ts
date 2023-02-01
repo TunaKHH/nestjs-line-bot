@@ -61,7 +61,7 @@ export class ResultObject {
   });
   static readonly LINE_SHARE = new ResultObject('LINE_SHARE', {
     text: 'Line分享好友 一起玩測',
-    url: 'https://line.me/R/nv/recommendOA/@845ibhra',
+    url: 'https://line.me/R/nv/recommendOA/@335euuhh',
   });
   static readonly FACEBOOK_SHARE = new ResultObject('FACEBOOK_SHARE', {
     text: 'Facebook分享好友 一起玩測',
