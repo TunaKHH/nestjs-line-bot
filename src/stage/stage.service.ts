@@ -19,7 +19,7 @@ export class StageService {
     UserStage.RESULT_SIGNUP,
     UserStage.RESULT_PHONE,
     UserStage.RESULT_LINE_ID,
-    UserStage.RESULT_SHARE,
+    // UserStage.RESULT_SHARE,
     UserStage.ENTRY,
   ];
 
