@@ -73,6 +73,14 @@ export class UserService {
     if (user.stage === UserStage.ENTRY && message === '開始測驗!!!') {
       user.stage = UserStage.QUIZ1;
     }
+
+    // 如果使用者未在報名畫面點擊報名 就跳回進入點
+    if (
+      user.stage === UserStage.RESULT_SIGNUP &&
+      message !== ResultObject.ANSWER_SIGNUP.value.text
+    ) {
+      user.stage = UserStage.ENTRY;
+    }
   }
 
   // 驗證email格式
