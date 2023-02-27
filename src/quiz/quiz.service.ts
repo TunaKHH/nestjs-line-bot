@@ -83,7 +83,7 @@ export class QuizService {
           contents: [
             {
               type: 'image',
-              url: 'https://i.imgur.com/awSXNi4.png',
+              url: 'https://i.imgur.com/x85Zhes.png',
               size: 'full',
             },
             {
@@ -192,7 +192,7 @@ export class QuizService {
     // const resultText = `講座：【如何正向引導孩子的情緒】\n\n講座時間：02/10(星期五) 晚上7:30-9:00\n主辦單位：芙愛占心學院\n課程費用：免費\n上課方式：線上ZOOM直播\n(請先行下載ZOOM APP)\n\n填寫LINE ID以及 手機號碼\n我們將以line或簡訊\n通知提醒線上ZOOM直播教室連結哦~`;
 
     // 根據結果數字轉換成結果圖片
-    const resultUrl = this.convertResultTextToImageUrl(result);
+    const resultUrl = QuizService.getResultAnimal(result).value.url;
 
     const lineOptions = this.generateLineOptionsByArray([
       '直接在下方輸入email後送出',
@@ -390,18 +390,18 @@ export class QuizService {
     };
     return message;
   }
-  getResultAnimal(number: string): string {
+  static getResultAnimal(number: string): Animal {
     if (number === '1') {
-      return Animal.NINJA.toString();
+      return Animal.NINJA;
     }
     if (number === '2') {
-      return Animal.SNOWMAN.toString();
+      return Animal.SNOWMAN;
     }
     if (number === '3') {
-      return Animal.MONKEY.toString();
+      return Animal.MONKEY;
     }
     if (number === '4') {
-      return Animal.AVATAR.toString();
+      return Animal.AVATAR;
     }
   }
 }
