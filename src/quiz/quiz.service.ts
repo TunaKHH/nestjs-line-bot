@@ -83,7 +83,7 @@ export class QuizService {
           contents: [
             {
               type: 'image',
-              url: 'https://i.imgur.com/awSXNi4.png',
+              url: 'https://i.imgur.com/x85Zhes.png',
               size: 'full',
             },
             {
@@ -192,7 +192,7 @@ export class QuizService {
     // const resultText = `講座：【如何正向引導孩子的情緒】\n\n講座時間：02/10(星期五) 晚上7:30-9:00\n主辦單位：芙愛占心學院\n課程費用：免費\n上課方式：線上ZOOM直播\n(請先行下載ZOOM APP)\n\n填寫LINE ID以及 手機號碼\n我們將以line或簡訊\n通知提醒線上ZOOM直播教室連結哦~`;
 
     // 根據結果數字轉換成結果圖片
-    const resultUrl = this.convertResultTextToImageUrl(result);
+    const resultUrl = QuizService.getResultAnimal(result).value.url;
 
     const lineOptions = this.generateLineOptionsByArray([
       '直接在下方輸入email後送出',
@@ -252,7 +252,7 @@ export class QuizService {
   // 取得結果分享訊息
   getResultShareMessage(animalName: string): line.Message {
     // 描述文字
-    const descriptionText = `公益講座<如何正向引導孩子的情緒>\n講座時間 :先下載Zoom App 2/10(五)晚上7:30-9:00\n主辦單位 : 芙愛占心學院\n課程費用 : 父母免費研習\n上課方式 : 線上zoom直播互動\n(請先下載Zoom App)\n\n填寫Line ID 及 手機號碼\n我們將以Line 或 簡訊\n通知線上zoom直播教室連結喔`;
+    const descriptionText = `公益講座<讓伴侶聽懂你的心>\n講座時間 : 3/17(五)晚7:30-9:00\n課程費用 : 人妻人夫免費研習\n上課方式 : 線上zoom直播互動\n(請先下載zoom App)\n\n我們將以mail /  Line\n通知上課連結網址喔`;
     // 要回傳的結果訊息
     const message: line.Message = {
       type: 'flex',
@@ -265,7 +265,7 @@ export class QuizService {
           contents: [
             {
               type: 'image',
-              url: 'https://i.imgur.com/awSXNi4.png',
+              url: 'https://i.imgur.com/x85Zhes.png',
               size: 'full',
             },
             {
@@ -279,9 +279,9 @@ export class QuizService {
               margin: 'md',
               color: '#FFCFAD',
               action: {
-                type: 'message',
+                type: 'uri',
                 label: ResultObject.ANSWER_SIGNUP.value.text,
-                text: ResultObject.ANSWER_SIGNUP.value.text,
+                uri: ResultObject.ANSWER_SIGNUP.value.url,
               },
             },
             {
@@ -315,7 +315,7 @@ export class QuizService {
   // 取得已經報名完成的結果分享訊息
   getSuccessSignupResultShareMessage(animalName: string): line.Message {
     // 描述文字
-    const descriptionText = `感謝您，報名已成功\n\n公益講座<如何正向引導孩子的情緒>\n講座時間 :先下載Zoom App 2/10(五)晚上7:30-9:00\n主辦單位 : 芙愛占心學院\n課程費用 : 父母免費研習\n上課方式 : 線上zoom直播互動\n(請先下載Zoom App)\n\n填寫Line ID 及 手機號碼\n我們將以Line 或 簡訊\n通知線上zoom直播教室連結喔`;
+    const descriptionText = `感謝您，報名已成功\n\n公益講座<讓伴侶聽懂你的心>\n講座時間 : 3/17(五)晚7:30-9:00\n課程費用 : 人妻人夫免費研習\n上課方式 : 線上zoom直播互動\n(請先下載zoom App)\n\n我們將以mail /  Line\n通知上課連結網址喔`;
     // 要回傳的結果訊息
     const message: line.Message = {
       type: 'flex',
@@ -328,7 +328,7 @@ export class QuizService {
           contents: [
             {
               type: 'image',
-              url: 'https://i.imgur.com/awSXNi4.png',
+              url: 'https://i.imgur.com/x85Zhes.png',
               size: 'full',
             },
             {
@@ -390,18 +390,18 @@ export class QuizService {
     };
     return message;
   }
-  getResultAnimal(number: string): string {
+  static getResultAnimal(number: string): Animal {
     if (number === '1') {
-      return Animal.NINJA.toString();
+      return Animal.NINJA;
     }
     if (number === '2') {
-      return Animal.SNOWMAN.toString();
+      return Animal.SNOWMAN;
     }
     if (number === '3') {
-      return Animal.MONKEY.toString();
+      return Animal.MONKEY;
     }
     if (number === '4') {
-      return Animal.AVATAR.toString();
+      return Animal.AVATAR;
     }
   }
 }

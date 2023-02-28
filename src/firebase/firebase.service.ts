@@ -1,6 +1,5 @@
-import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, push, child, update } from 'firebase/database';
 import { User } from 'src/user/user.interface';
+import admin from 'firebase-admin';
 
 export class FirebaseService {
   // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -14,10 +13,23 @@ export class FirebaseService {
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
     databaseURL: process.env.FIREBASE_DATABASE_URL,
   };
+  admin = null;
+  db = null;
+  ref = null;
+  serviceAccount = require('../../credentials/firebase/serviceAccountKey.json');
+  constructor() {
+    this.init();
+  }
 
-  // Initialize Firebase
-  app = initializeApp(this.firebaseConfig);
-  db = getDatabase(this.app);
+  init(): void {
+    this.admin = admin.initializeApp({
+      credential: admin.credential.cert(this.serviceAccount),
+      databaseURL: process.env.FIREBASE_DATABASE_URL,
+    });
+    if (!this.admin) {
+      throw new Error('Firebase Admin not initialized');
+    }
+  }
 
   writeUserData(user: User) {
     // Initialize Realtime Database and get a reference to the service
@@ -35,17 +47,18 @@ export class FirebaseService {
       };
       const updates = {};
       updates['/users/' + newUserKey] = userData;
-      return update(ref(this.db), updates);
+      return this.admin.database().ref().update(updates);
     } catch (e) {
       //另外處理firebase的錯誤 避免被使用者直接看到
+      console.log('firebase error', e);
       throw new Error('系統新增錯誤，請稍後再試');
     }
   }
   getOrGenerateUserKey(user: User) {
     // 如果使用者沒有key 就新增一個key
     if (!user.userKey) {
-      user.userKey = push(child(ref(this.db), 'users')).key;
-      return;
+      user.userKey = this.admin.database().ref().push().key;
+      return user.userKey;
     }
     return user.userKey;
   }

@@ -21,25 +21,25 @@ export class Animal {
   // 忍者
   static readonly NINJA = new Animal('NINJA', {
     text: '忍者',
-    url: 'https://i.imgur.com/01NsPDl.png',
+    url: 'https://i.imgur.com/lGWfMFp.png',
     shareUrl: 'https://pse.is/4pjn7a',
   });
   // 雪寶
   static readonly SNOWMAN = new Animal('SNOWMAN', {
     text: '雪寶',
-    url: 'https://i.imgur.com/lNJjDQW.png',
+    url: 'https://i.imgur.com/awYMdUq.png',
     shareUrl: 'https://pse.is/4rjlr4',
   });
   // 悟空
   static readonly MONKEY = new Animal('MONKEY', {
     text: '悟空',
-    url: 'https://i.imgur.com/smp1y9Q.png',
+    url: 'https://i.imgur.com/Ggquil9.png',
     shareUrl: 'https://pse.is/4pn87b',
   });
   // 阿凡達
   static readonly AVATAR = new Animal('AVATAR', {
     text: '阿凡達',
-    url: 'https://i.imgur.com/ub6VTtO.png',
+    url: 'https://i.imgur.com/HxK7TH2.png',
     shareUrl: 'https://pse.is/4rc8wd',
   });
 
@@ -58,6 +58,7 @@ export class ResultObject {
   // 報名
   static readonly ANSWER_SIGNUP = new ResultObject('ANSWER_SIGNUP', {
     text: '我要報名公益講座',
+    url: 'https://docs.google.com/forms/d/e/1FAIpQLSc9cybu27JEVqAIPSgm1rEWSx2jSbw7-bV5pL_3kk3IpJ1REA/viewform',
   });
   static readonly LINE_SHARE = new ResultObject('LINE_SHARE', {
     text: 'Line分享好友 一起玩測',

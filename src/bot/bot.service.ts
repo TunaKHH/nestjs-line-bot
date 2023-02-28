@@ -83,7 +83,7 @@ export class BotService {
         const resultNum = this.userService.getMostAnswer(user);
 
         // 取得使用者測驗的結果動物 並儲存到user
-        user.animal = this.quizService.getResultAnimal(resultNum);
+        user.animal = QuizService.getResultAnimal(resultNum).toString();
 
         responseMessage = this.quizService.getResultMessage(resultNum);
         break;
