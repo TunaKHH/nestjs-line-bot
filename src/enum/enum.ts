@@ -58,6 +58,7 @@ export class ResultObject {
   // 報名
   static readonly ANSWER_SIGNUP = new ResultObject('ANSWER_SIGNUP', {
     text: '我要報名公益講座',
+    url: 'https://docs.google.com/forms/d/e/1FAIpQLSc9cybu27JEVqAIPSgm1rEWSx2jSbw7-bV5pL_3kk3IpJ1REA/viewform',
   });
   static readonly LINE_SHARE = new ResultObject('LINE_SHARE', {
     text: 'Line分享好友 一起玩測',
