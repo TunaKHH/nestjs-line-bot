@@ -83,7 +83,7 @@ export class QuizService {
           contents: [
             {
               type: 'image',
-              url: 'https://i.imgur.com/x85Zhes.png',
+              url: 'https://i.imgur.com/hAkEoSw.jpg',
               size: 'full',
             },
             {
@@ -187,20 +187,39 @@ export class QuizService {
   getResultMessage(result: string): line.Message {
     if (!result) return this.getEntryMessage();
     // 結果文字
-
-    const resultText = `上面圖片 是你的初步解答\n寫下您的姓名+mail送出\n可獲得更完整的詳細資料\n讓你更了解你自己\n也歡迎讓家中孩子一起評測`;
+    const resultText = `做完測驗 你更認識自己了嗎 ?\n
+你知道你的家人 又是哪種情緒原型角色嗎 ?\n
+\n
+認識彼此的情緒\n
+理解彼此的保護程式\n
+只要再透過學習溝通\n
+相信你和你重視的人\n
+一定會有更和諧的關係\n
+\n
+關於豐富學習資源 :\n
+子玲老師💝解憂小屋Line@`;
+    // const resultText = `上面圖片 是你的初步解答\n寫下您的姓名+mail送出\n可獲得更完整的詳細資料\n讓你更了解你自己\n也歡迎讓家中孩子一起評測`;
     // const resultText = `講座：【如何正向引導孩子的情緒】\n\n講座時間：02/10(星期五) 晚上7:30-9:00\n主辦單位：芙愛占心學院\n課程費用：免費\n上課方式：線上ZOOM直播\n(請先行下載ZOOM APP)\n\n填寫LINE ID以及 手機號碼\n我們將以line或簡訊\n通知提醒線上ZOOM直播教室連結哦~`;
 
     // 根據結果數字轉換成結果圖片
     const resultUrl = QuizService.getResultAnimal(result).value.url;
 
-    const lineOptions = this.generateLineOptionsByArray([
-      '直接在下方輸入email後送出',
-    ]);
+    // const lineOptions = this.generateLineOptionsByArray([
+    //   '直接在下方輸入email後送出',
+    // ]);
+    const lineOption: line.FlexComponent = {
+      type: 'button',
+      action: {
+        type: 'uri',
+        label: '子玲老師💝解憂小屋Line@',
+        uri: 'https://lin.ee/okGh80v',
+      },
+      style: 'link',
+    };
     const lineFlexMessage: LineFlexMessage = {
       url: resultUrl,
       text: resultText,
-      options: lineOptions,
+      options: lineOption,
     };
     return this.generateFlexMessage(lineFlexMessage);
   }

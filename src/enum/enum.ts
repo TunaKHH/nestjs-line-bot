@@ -21,25 +21,25 @@ export class Animal {
   // 忍者
   static readonly NINJA = new Animal('NINJA', {
     text: '忍者',
-    url: 'https://i.imgur.com/lGWfMFp.png',
+    url: 'https://i.imgur.com/0G9qJX8.jpg',
     shareUrl: 'https://pse.is/4pjn7a',
   });
   // 雪寶
   static readonly SNOWMAN = new Animal('SNOWMAN', {
     text: '雪寶',
-    url: 'https://i.imgur.com/awYMdUq.png',
+    url: 'https://i.imgur.com/7I3bKpH.jpg',
     shareUrl: 'https://pse.is/4rjlr4',
   });
   // 悟空
   static readonly MONKEY = new Animal('MONKEY', {
     text: '悟空',
-    url: 'https://i.imgur.com/Ggquil9.png',
+    url: 'https://i.imgur.com/z0v5cak.jpg',
     shareUrl: 'https://pse.is/4pn87b',
   });
   // 阿凡達
   static readonly AVATAR = new Animal('AVATAR', {
     text: '阿凡達',
-    url: 'https://i.imgur.com/HxK7TH2.png',
+    url: 'https://i.imgur.com/QdRCniB.jpg',
     shareUrl: 'https://pse.is/4rc8wd',
   });
 
